@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Tortilla - Tortitos</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <header class="bg-dark text-white py-3 text-center">
+    <h1 class="m-0 text-lowercase">welcome to tortitos</h1>
+  </header>
+
+  <div class="container mt-4">
+    <h2 class="text-center mb-3 text-lowercase">choose your tortilla</h2>
+    <div class="row">
+      <!-- Classic Tortilla -->
+      <div class="col-md-3 mb-3 text-center">
+        <div class="card">
+          <img src="https://via.placeholder.com/250" alt="Classic Tortilla" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">classic tortilla</h5>
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity1', -1)">-</button>
+              <input type="number" class="form-control text-center mx-2" id="quantity1" value="0" min="0">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity1', 1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cheesy Tortilla -->
+      <div class="col-md-3 mb-3 text-center">
+        <div class="card">
+          <img src="https://via.placeholder.com/250" alt="Cheesy Tortilla" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">cheesy tortilla</h5>
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity2', -1)">-</button>
+              <input type="number" class="form-control text-center mx-2" id="quantity2" value="0" min="0">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity2', 1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Veggie Tortilla -->
+      <div class="col-md-3 mb-3 text-center">
+        <div class="card">
+          <img src="https://via.placeholder.com/250" alt="Veggie Tortilla" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">veggie tortilla</h5>
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity3', -1)">-</button>
+              <input type="number" class="form-control text-center mx-2" id="quantity3" value="0" min="0">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity3', 1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spicy Tortilla -->
+      <div class="col-md-3 mb-3 text-center">
+        <div class="card">
+          <img src="https://via.placeholder.com/250" alt="Spicy Tortilla" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">spicy tortilla</h5>
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity4', -1)">-</button>
+              <input type="number" class="form-control text-center mx-2" id="quantity4" value="0" min="0">
+              <button class="btn btn-secondary" onclick="adjustQuantity('quantity4', 1)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <label for="customerName">your name:</label>
+      <input type="text" class="form-control mb-2" id="customerName" required>
+      <label for="customerContact">your contact info:</label>
+      <input
+        type="text"
+        class="form-control mb-2"
+        id="customerContact"
+        oninput="validateNumbersOnly(this)"
+        placeholder="Enter numbers only"
+      >
+      <button class="btn btn-success mt-2 text-lowercase" onclick="storeOrderDetails()">place order</button>
+    </div>
+  </div>
+
+  <script>
+    // Adjust quantity with + or - buttons
+    function adjustQuantity(id, change) {
+      const inputField = $('#' + id);
+      let newValue = parseInt(inputField.val()) + change;
+
+      if (newValue < 0) newValue = 0;
+
+      inputField.val(newValue);
+    }
+
+    // Function to validate that only numbers are entered in contact field
+    function validateNumbersOnly(input) {
+      input.value = input.value.replace(/[^0-9]/g, ''); // Allow numbers only
+    }
+
+    // Function to store order details into localStorage
+    function storeOrderDetails() {
+      const name = $('#customerName').val().trim();
+      const contact = $('#customerContact').val().trim();
+      const quantity1 = parseInt($('#quantity1').val()) || 0;
+      const quantity2 = parseInt($('#quantity2').val()) || 0;
+      const quantity3 = parseInt($('#quantity3').val()) || 0;
+      const quantity4 = parseInt($('#quantity4').val()) || 0;
+
+      if (items.length === 0) {
+        alert("Please select at least one item to order.");
+        return;
+      }
+
+      const payload = { name, contact, items };
+
+      let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+      orderHistory.push(payload);
+      localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+
+      alert("Order successfully placed.");
+      $('#customerName').val('');
+      $('#customerContact').val('');
+      $('#quantity1').val(0);
+      $('#quantity2').val(0);
+      $('#quantity3').val(0);
+      $('#quantity4').val(0);
+    }
+  </script>
+</body>
+
+</html>
